@@ -27,8 +27,15 @@ public class FoquitoScript : MonoBehaviour
         }
         DeactivateAllLights();
         colors[currentLightIndex].SetActive(true);
+        if(currentLightIndex == 0){
+            lightCount++;
+        }
+        if(lightCount == 4){
+            CancelInvoke();
+            DeactivateAllLights();
+        }
     }
-
+    int lightCount = 0;
     public void ActivatePreviousLight()
     {
         currentLightIndex--;
@@ -47,10 +54,13 @@ public class FoquitoScript : MonoBehaviour
             colors[i].SetActive(false);
         }
     }
-
+    bool Activated = false;
     public void ActivateRepeating(float t)
     {
-        CancelInvoke();
-        InvokeRepeating(nameof(ActivateNextLight),0,t);
+        if (!Activated)
+        {
+            InvokeRepeating(nameof(ActivateNextLight),0,t);
+            Activated = true;
+        }        
     }
 }
